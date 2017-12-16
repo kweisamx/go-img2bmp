@@ -17,6 +17,8 @@ go get github.com/kweisamx/go-png2bmp
 ```
 or 
 ```
+mkdir -p $GOPATH/src/github.com/kweisamx/go-png2bmp/
+cd $GOPATH/src/github.com/kweisamx/go-png2bmp/
 git clone https://github.com/kweisamx/go-png2bmp
 ```
 
@@ -24,7 +26,7 @@ use go install or build make binary
 
 
 ```
-cd $GOPATH/src/github/kweisamx/go-png2bmp/
+cd $GOPATH/src/github.com/kweisamx/go-png2bmp/
 go install
 ```
 
