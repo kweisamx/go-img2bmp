@@ -1,10 +1,13 @@
 package main
 
-import  "image/png"
+import "image/png"
 import "golang.org/x/image/bmp"
+import "image/jpeg"
 import (
 	"fmt"
+	"image"
 	"os"
+	"strings"
 )
 
 func main() {
@@ -13,22 +16,39 @@ func main() {
 		fmt.Println("Too few argument, please put intput and output")
 		return
 	}
-    fmt.Println("Reading image...")
+	fmt.Println("Reading image...")
 	/* Image Read */
-	imagein, err := os.Open(os.Args[1])
+	imageinput, err := os.Open(os.Args[1])
 	if err != nil {
 		panic(err.Error())
 	}
-	defer imagein.Close()
+	defer imageinput.Close()
 
-	src, err := png.Decode(imagein)
+	/* Detect Image format */
+
+	filenameSplit := strings.Split(os.Args[1], ".")
+	format := filenameSplit[len(filenameSplit)-1]
+	fmt.Println("The image format is " + strings.ToLower(format))
+	var src image.Image
+	/* Decode Image */
+	switch strings.ToLower(format) {
+	case "png":
+		src, err = png.Decode(imageinput)
+	case "jpg", "jpeg":
+		src, err = jpeg.Decode(imageinput)
+	default:
+		fmt.Println("The " + format + " we don't support to convert")
+		os.Exit(1)
+	}
+
 	if err != nil {
 		// replace this with real error handling
 		panic(err.Error())
 	}
 
 	/* Covert to bmp*/
-    fmt.Println("Converting image...")
+
+	fmt.Println("Converting image...")
 	outfile, err := os.Create(os.Args[2])
 	if err != nil {
 		// replace this with real error handling
